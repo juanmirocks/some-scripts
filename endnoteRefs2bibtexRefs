@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import re
+import os
 
 assert sys.version_info.major == 3, "the script requires Python 3"
 
@@ -60,6 +61,8 @@ if __name__ == "__main__":
                         rest_of_line = match.group(3)
                     else:
                         sys.stdout.write(rest_of_line)
+                        if os.linesep not in rest_of_line:
+                            sys.stdout.write(os.linesep)
                         rest_of_line = ""
 
         sys.stdout.flush()
