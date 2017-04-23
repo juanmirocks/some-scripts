@@ -4,6 +4,7 @@ import re
 
 assert sys.version_info.major == 3, "the script requires Python 3"
 
+
 __author__ = "Juan Miguel Cejuela (@juanmirocks)"
 
 
