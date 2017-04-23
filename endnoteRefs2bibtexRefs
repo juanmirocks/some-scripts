@@ -2,13 +2,6 @@
 import sys
 import re
 
-try:
-    import requests
-    import requests_cache
-except Exception as e:
-    print("ERROR", "- You need to install missing dependencies: pip install requests requests-cache\n")
-    raise
-
 assert sys.version_info.major == 3, "the script requires Python 3"
 
 __author__ = "Juan Miguel Cejuela (@juanmirocks)"
