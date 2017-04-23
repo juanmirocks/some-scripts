@@ -10,7 +10,7 @@ __author__ = "Juan Miguel Cejuela (@juanmirocks)"
 
 
 __help__ = """
-            Transform a text converting inlined unformatted endnote references/citations to bibtex-latex citations, as in:
+            Transform inline a text converting unformatted endnote references/citations to bibtex-latex citations, as in:
 
             Input:
             blah blah... {Van Auken, 2012 #1;Gramates 2017 #82;Cejuela, 2017 #277} blah blah {Vaynerchuk 2016; #4}
@@ -33,6 +33,11 @@ __help__ = """
 
             Converted text to standard outputt
 
+
+            KNOWN LIMITATION: you should previously merge the relevant lines, as multiline citations are currently not detected, e.g.:
+
+            blah blah \{Cejuela, 2017
+            \#277\}.
 
 
             Go ahead, you can run the script on this script :-)
