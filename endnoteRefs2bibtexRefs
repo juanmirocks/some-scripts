@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import sys
 import re
-import os
 
 assert sys.version_info.major == 3, "the script requires Python 3"
 
@@ -44,8 +43,8 @@ __help__ = """
            """
 
 
-REGEX_OUTER = "(.*?)(\\\?{[^{}]*?#[^{}]*}\\\?)(.*)"
-REGEX_INNER = "#([0-9]+)"
+REGEX_OUTER = re.compile("(.*?)(\\\?{[^{}]*?#[^{}]*}\\\?)(.*)", re.DOTALL)
+REGEX_INNER = re.compile("#([0-9]+)")
 
 # ----------------------------------------------------------------------------
 
