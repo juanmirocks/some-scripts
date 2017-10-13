@@ -10,35 +10,26 @@ __author__ = "Juan Miguel Cejuela (@juanmirocks)"
 
 
 __help__ = """
-            Transform inline a text file, converting unformatted endnote references/citations to bibtex-latex citations, as in:
+            Transform inline a text file, converting unformatted endnote references/citations to bibtex-latex citations,
+            as in:
 
             Input:
             blah blah... {Van Auken, 2012 #1;Gramates 2017 #82;Cejuela, 2017 #277} blah blah {Vaynerchuk 2016; #4}
 
             Output:
-
             blah blah... \cite{RN1,RN82,RN277} blah blah
 
 
-            The script also works if the input contains squarly brackets ({, }) and the # symbol (#) escaped, e.g. \{Pio 2045 \#0\}.
+            Notes:
 
+            * The script also works if the input contains squarly brackets ({, }) and the # symbol (#) is escaped, e.g.
+            \{Pio 2045 \#0\}.
 
-            Script arguments:
-
-            1.
-            2. (optional; defaults to first line)
-            3. (optional; defaults to "RN")
-
-
-            Script output:
-
-            Converted text to standard outputt
-
-
-            KNOWN LIMITATION: you should previously merge the relevant lines, as multiline citations are currently not detected, e.g.:
-
-            blah blah \{Cejuela, 2017
-            \#277\}.
+            * WARNING (KNOWN LIMITATION): you should previously merge the relevant lines, as multiline citations are
+            * currently not detected, e.g.:
+                blah blah \{Cejuela, 2017
+                \#277\}.
+            * For more info, run the script with the `--help` argument
 
 
             Go ahead, you can run the script on this script :-)
@@ -54,7 +45,7 @@ if __name__ == "__main__":
     try:
         parser = argparse.ArgumentParser(description=__help__)
 
-        parser.add_argument("input_file", help="File to convert")
+        parser.add_argument("input_file", help="File to be converted")
         parser.add_argument("--start_at_line", type=int, required=False, default=1,
                             help="Start processing after the given line only")
         parser.add_argument("--cite_command", required=False, default="cite",
