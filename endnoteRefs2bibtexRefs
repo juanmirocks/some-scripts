@@ -29,7 +29,15 @@ __help__ = """
             * currently not detected, e.g.:
                 blah blah \{Cejuela, 2017
                 \#277\}.
-            * For more info, run the script with the `--help` argument
+
+            * Tip: to convert a work-in-progress word document to latex, you can combine pandoc (or similar utility) and
+              this script like:
+
+              1. Backup your word file, and in the new file, do: EndNote --> Tools --> Convert to Unformatted Citations
+              2. pandoc -t latex -s --wrap=none yourWordDocument.docx > temp1.tex
+              3. endnoteRefs2bibtexRefs temp1.tex > temp2.tex
+
+            * For more info, run the script with the `--help` argument.
 
 
             Go ahead, you can run the script on this script :-)
