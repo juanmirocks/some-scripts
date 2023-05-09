@@ -8,10 +8,10 @@ download_arxiv_PDF() {
   if [[ "$article" =~ ^https?://arxiv.org/abs/(.+)$ ]]; then
     identifier="${BASH_REMATCH[1]}"
   elif [[ -z "$article" ]]; then
-    >&2 echo "Error: Empty arXiv URL or identifier"
+    echo >&2 "Error: Empty arXiv URL or identifier"
     exit 1
   else
-      identifier="$article"
+    identifier="$article"
   fi
 
   # Get the metadata for the article
@@ -19,8 +19,8 @@ download_arxiv_PDF() {
 
   # Check if the API returned an error
   if [[ $metadata == *"<title>Error</title>"* ]]; then
-      >&2 echo "Error: Invalid arXiv URL or identifier: ${identifier}"
-      exit 1
+    echo >&2 "Error: Invalid arXiv URL or identifier: ${identifier}"
+    exit 1
   fi
 
   # Extract the relevant information from the metadata using xpath (requires xmllint)
@@ -35,15 +35,15 @@ download_arxiv_PDF() {
   latest_date=${latest_date:0:10}
 
   # Shorten the authors names according to the rules
-  IFS=',' read -ra authors_array <<< "$authors"
+  IFS=',' read -ra authors_array <<<"$authors"
   if [ "${#authors_array[@]}" -ge 4 ]; then
-      authors="${authors_array[0]} et al"
+    authors="${authors_array[0]} et al"
   fi
 
   # Construct the filename according to the format
   filename="$original_date"
   if [ "$latest_version" != "1" ]; then
-      filename+=" ($latest_date v$latest_version)"
+    filename+=" ($latest_date v$latest_version)"
   fi
   filename+=" - $authors - $title.pdf"
 
