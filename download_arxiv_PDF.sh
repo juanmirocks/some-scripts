@@ -47,10 +47,12 @@ download_arxiv_PDF() {
   fi
   filename+=" - $authors - $title.pdf"
 
-  # Download the PDF
-  curl -sS "https://arxiv.org/pdf/$identifier.pdf" --output "$save_to/$filename"
+  out_filepath="$save_to/$filename"
 
-  echo "Downloaded PDF as: $filename"
+  # Download the PDF
+  curl -sS "https://arxiv.org/pdf/$identifier.pdf" --output "$out_filepath"
+
+  echo "Downloaded PDF as: $out_filepath"
 }
 
 download_arxiv_PDF "$@"
