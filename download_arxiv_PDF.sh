@@ -55,4 +55,6 @@ download_arxiv_PDF() {
   echo "Downloaded PDF as: $out_filepath"
 }
 
-download_arxiv_PDF "$@"
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  download_arxiv_PDF "$@"
+fi
