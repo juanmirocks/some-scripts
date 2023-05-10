@@ -21,9 +21,9 @@ arxiv_download_PDF() {
   article="$1"
   save_to="${2-"."}"
 
-  # Check if input is a URL or an identifier
-  if [[ "$article" =~ ^https?://arxiv.org/abs/(.+)$ ]]; then
-    identifier="${BASH_REMATCH[1]}"
+  # Check if input is a URL or an identifier; see: https://info.arxiv.org/help/arxiv_identifier.html
+  if [[ "$article" =~ ^https?://arxiv.org/(abs|pdf)/([[:digit:]]{4}\.[[:digit:]]{4,6}v?[[:digit:]]*)(.pdf)?$ ]]; then
+    identifier="${BASH_REMATCH[2]}"
   elif [[ -z "$article" ]]; then
     echo >&2 "Error: Empty arXiv URL or identifier"
     exit 1
