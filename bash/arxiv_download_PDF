@@ -31,6 +31,8 @@ arxiv_download_PDF() {
     identifier="$article"
   fi
 
+  >&2 echo "Downloading PDF arXiv:$identifier ..."
+
   # Get the metadata for the article
   metadata=$(curl -sLH "Accept: application/json" "http://export.arxiv.org/api/query?id_list=$identifier")
 
@@ -76,7 +78,7 @@ arxiv_download_PDF() {
     exiftool -q -overwrite_original_in_place -Title="$title" -Author="$authors" -Subject="https://arxiv.org/abs/$identifier" -CreateDate="$original_time" -ModifyDate="$latest_time" "$out_filepath"
   fi
 
-  echo "Downloaded PDF as: $out_filepath"
+  echo "$out_filepath"
 }
 
 
