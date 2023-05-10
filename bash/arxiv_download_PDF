@@ -6,7 +6,7 @@
 
 #
 # Download arXiv PDF article with a sensible filename format:
-# `PUBLICATION_ISO_DATE (UPDATED_ISO_DATE vX) - AUTHORS_SHORTENED - TITLE - VERSIONED_IDENTIFIER.pdf`
+# `PUBLICATION_ISO_DATE (UPDATED_ISO_DATE vX) - AUTHORS_SHORTENED - TITLE - IDENTIFIER.pdf`
 #
 # Additionally, if `exiftool` is installed, this script also adds sensible metadata to the downloaded PDF.
 #
@@ -48,7 +48,6 @@ arxiv_download_PDF() {
   authors_surnames=$(echo "$authors" | awk '{print $NF}' | paste -sd "," -)
   authors_shortened="${authors_surnames}"
   latest_version=$(echo "$metadata" | xmllint --xpath '//*[local-name()="entry"]/*[local-name()="id"]/text()' - | grep -oE 'v[0-9]+')
-  versioned_identifier="${identifier}${latest_version}"
 
   # Format the dates by extracting the first 10 characters (date in ISO format)
   original_date=${original_time:0:10}
@@ -65,7 +64,7 @@ arxiv_download_PDF() {
   if [ "$latest_version" != "v1" ]; then
     filename+=" ($latest_date $latest_version)"
   fi
-  filename+=" - $authors_shortened - $(_escape_str_for_filename "$title") - $versioned_identifier.pdf"
+  filename+=" - $authors_shortened - $(_escape_str_for_filename "$title") - $identifier.pdf"
 
   out_filepath="$save_to/$filename"
 
