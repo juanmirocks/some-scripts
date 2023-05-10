@@ -73,7 +73,7 @@ arxiv_download_PDF() {
 
   # Write metadata if `exiftool` is installed
   if command -v exiftool >/dev/null; then
-    exiftool -q -overwrite_original_in_place -Title="$title" -Author="$authors" -Subject="https://arxiv.org/abs/$versioned_identifier" -CreateDate="$original_time" -ModifyDate="$latest_time" "$out_filepath"
+    exiftool -q -overwrite_original_in_place -Title="$title" -Author="$authors" -Subject="https://arxiv.org/abs/$identifier" -CreateDate="$original_time" -ModifyDate="$latest_time" "$out_filepath"
   fi
 
   echo "Downloaded PDF as: $out_filepath"
