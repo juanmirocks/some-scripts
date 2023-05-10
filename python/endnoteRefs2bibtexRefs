@@ -6,42 +6,42 @@ import argparse
 assert sys.version_info.major == 3, "the script requires Python 3"
 
 
-__author__ = "Juan Miguel Cejuela (@juanmirocks)"
+__author__ = "Dr. Juan Miguel Cejuela (@juanmirocks)"
 
 
 __help__ = """
-            Transform inline a text file, converting unformatted endnote references/citations to bibtex-latex citations,
-            as in:
+Transform inline a text file, converting unformatted endnote references/citations to bibtex-latex citations,
+as in:
 
-            Input:
-            blah blah... {Van Auken, 2012 #1;Gramates 2017 #82;Cejuela, 2017 #277} blah blah {Vaynerchuk 2016; #4}
+Input:
+blah blah... {Van Auken, 2012 #1;Gramates 2017 #82;Cejuela, 2017 #277} blah blah {Vaynerchuk 2016; #4}
 
-            Output:
-            blah blah... \cite{RN1,RN82,RN277} blah blah
-
-
-            Notes:
-
-            * The script also works if the input contains squarly brackets ({, }) and the # symbol (#) is escaped, e.g.
-            \{Pio 2045 \#0\}.
-
-            * WARNING (KNOWN LIMITATION): you should previously merge the relevant lines, as multiline citations are
-            * currently not detected, e.g.:
-                blah blah \{Cejuela, 2017
-                \#277\}.
-
-            * Tip: to convert a work-in-progress word document to latex, you can combine pandoc (or similar utility) and
-              this script like:
-
-              1. Backup your word file, and in the new file, do: EndNote --> Tools --> Convert to Unformatted Citations
-              2. pandoc -t latex -s --wrap=none yourWordDocument.docx > temp1.tex
-              3. endnoteRefs2bibtexRefs temp1.tex > temp2.tex
-
-            * For more info, run the script with the `--help` argument.
+Output:
+blah blah... \cite{RN1,RN82,RN277} blah blah
 
 
-            Go ahead, you can run the script on this script :-)
-           """
+Notes:
+
+* The script also works if the input contains squarly brackets ({, }) and the # symbol (#) is escaped, e.g.
+\{Pio 2045 \#0\}.
+
+* WARNING (KNOWN LIMITATION): you should previously merge the relevant lines, as multiline citations are
+* currently not detected, e.g.:
+    blah blah \{Cejuela, 2017
+    \#277\}.
+
+* Tip: to convert a work-in-progress word document to latex, you can combine pandoc (or similar utility) and
+    this script like:
+
+    1. Backup your word file, and in the new file, do: EndNote --> Tools --> Convert to Unformatted Citations
+    2. pandoc -t latex -s --wrap=none yourWordDocument.docx > temp1.tex
+    3. endnoteRefs2bibtexRefs temp1.tex > temp2.tex
+
+* For more info, run the script with the `--help` argument.
+
+
+Go ahead, you can run the script on this script :-)
+"""
 
 
 REGEX_OUTER = re.compile("(.*?)(\\\?{[^{}]*?#[^{}]*}\\\?)(.*)", re.DOTALL)
