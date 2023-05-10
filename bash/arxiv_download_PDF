@@ -35,6 +35,7 @@ arxiv_download_PDF() {
 
   # Get the metadata for the article
   metadata=$(curl -sLH "Accept: application/json" "http://export.arxiv.org/api/query?id_list=$identifier")
+  # >&2 echo -e "$metadata"
 
   # Check if the API returned an error
   if [[ $metadata == *"<title>Error</title>"* ]]; then
