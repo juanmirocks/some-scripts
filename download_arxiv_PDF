@@ -2,7 +2,7 @@
 
 download_arxiv_PDF() {
   article="$1"
-  save_to="${2-$PWD}"
+  save_to="${2-"."}"
 
   # Check if input is a URL or an identifier
   if [[ "$article" =~ ^https?://arxiv.org/abs/(.+)$ ]]; then
