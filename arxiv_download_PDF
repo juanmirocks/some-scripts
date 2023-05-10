@@ -45,7 +45,7 @@ arxiv_download_PDF() {
   if [ "$latest_version" != "1" ]; then
     filename+=" ($latest_date v$latest_version)"
   fi
-  filename+=" - $authors - $title.pdf"
+  filename+=" - $authors - $(_escape_str_for_filename "$title").pdf"
 
   out_filepath="$save_to/$filename"
 
@@ -53,6 +53,14 @@ arxiv_download_PDF() {
   curl -sS "https://arxiv.org/pdf/$identifier.pdf" --output "$out_filepath"
 
   echo "Downloaded PDF as: $out_filepath"
+}
+
+_escape_str_for_filename() {
+  _x="$1"
+  _x="${_x//\// }"
+  _x="${_x//:/;}"
+  # NOTE: we echo without double quotes. In this way, bash collapses contiguous whitespaces
+  echo $_x
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
