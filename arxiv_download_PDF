@@ -1,5 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#last tested with: bash 5.2.x
 
+# Copyright 2023 Dr. Juan Miguel Cejuela
+
+
+#
+# Download arXiv PDF article with a sensible filename format:
+# `PUBLICATION_ISO_DATE (UPDATED_ISO_DATE vX) - AUTHORS_SHORTENED - TITLE.pdf`
+#
+# `(UPDATED_ISO_DATE vX)`` is optional and only written if the article was updated; `vX` is the latest update version number (if any, i.e., `X` >= 2).
+#
+# Arguments:
+# 1: article's URL or identifier
+# 2: (OPTIONAL) folder to save the PDF into (it defaults to the current directory).
+#
 arxiv_download_PDF() {
   article="$1"
   save_to="${2-"."}"
@@ -55,6 +69,7 @@ arxiv_download_PDF() {
   echo "Downloaded PDF as: $out_filepath"
 }
 
+
 _escape_str_for_filename() {
   _x="$1"
   _x="${_x//\// }"
@@ -62,6 +77,7 @@ _escape_str_for_filename() {
   # NOTE: we echo without double quotes. In this way, bash collapses contiguous whitespaces
   echo $_x
 }
+
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   arxiv_download_PDF "$@"
