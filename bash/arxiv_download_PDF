@@ -8,7 +8,10 @@
 # Download arXiv PDF article with a sensible filename format:
 # `PUBLICATION_ISO_DATE (UPDATED_ISO_DATE vX) - AUTHORS_SHORTENED - TITLE.pdf`
 #
-# `(UPDATED_ISO_DATE vX)`` is optional and only written if the article was updated; `vX` is the latest update version number (if any, i.e., `X` >= 2).
+# Additionally, if `exiftool` is installed, this script also adds sensible metadata to the downloaded PDF.
+#
+# Note:
+# `(UPDATED_ISO_DATE vX)`` is optional and only written if the article was updated; `vX` is the latest update version number (if any, i.e., `X` >= 2).#
 #
 # Arguments:
 # 1: article's URL or identifier
@@ -38,20 +41,22 @@ arxiv_download_PDF() {
   fi
 
   # Extract the relevant information from the metadata using xpath (requires xmllint)
-  original_date=$(echo "$metadata" | xmllint --xpath '//*[local-name()="entry"]/*[local-name()="published"]/text()' -)
-  latest_date=$(echo "$metadata" | xmllint --xpath '//*[local-name()="entry"]/*[local-name()="updated"]/text()' -)
+  original_time=$(echo "$metadata" | xmllint --xpath '//*[local-name()="entry"]/*[local-name()="published"]/text()' -)
+  latest_time=$(echo "$metadata" | xmllint --xpath '//*[local-name()="entry"]/*[local-name()="updated"]/text()' -)
   title=$(echo "$metadata" | xmllint --xpath '//*[local-name()="entry"]/*[local-name()="title"]/text()' -)
-  authors=$(echo "$metadata" | xmllint --xpath '//*[local-name()="entry"]//*[local-name()="author"]/*[local-name()="name"]/text()' - | awk '{print $NF}' | paste -sd "," -)
+  authors=$(echo "$metadata" | xmllint --xpath '//*[local-name()="entry"]//*[local-name()="author"]/*[local-name()="name"]/text()' -)
+  authors_surnames=$(echo "$authors" | awk '{print $NF}' | paste -sd "," -)
+  authors_shortened="${authors_surnames}"
   latest_version=$(echo "$metadata" | xmllint --xpath '//*[local-name()="entry"]/*[local-name()="id"]/text()' - | grep -oE 'v[0-9]+' | tr -d 'v')
 
   # Format the dates by extracting the first 10 characters (date in ISO format)
-  original_date=${original_date:0:10}
-  latest_date=${latest_date:0:10}
+  original_date=${original_time:0:10}
+  latest_date=${latest_time:0:10}
 
   # Shorten the authors names according to the rules
-  IFS=',' read -ra authors_array <<<"$authors"
+  IFS=',' read -ra authors_array <<<"$authors_surnames"
   if [ "${#authors_array[@]}" -ge 4 ]; then
-    authors="${authors_array[0]} et al"
+    authors_shortened="${authors_array[0]} et al"
   fi
 
   # Construct the filename according to the format
@@ -59,12 +64,18 @@ arxiv_download_PDF() {
   if [ "$latest_version" != "1" ]; then
     filename+=" ($latest_date v$latest_version)"
   fi
-  filename+=" - $authors - $(_escape_str_for_filename "$title").pdf"
+  filename+=" - $authors_shortened - $(_escape_str_for_filename "$title").pdf"
 
   out_filepath="$save_to/$filename"
 
   # Download the PDF
   curl -sS "https://arxiv.org/pdf/$identifier.pdf" --output "$out_filepath"
+
+  # Write metadata if `exiftool` is installed
+  if command -v exiftool >/dev/null; then
+    echo $original_time
+    exiftool -q -overwrite_original_in_place -Title="$title" -Author="$authors" -Subject="https://arxiv.org/abs/$identifier" -CreateDate="$original_time" -ModifyDate="$latest_time" "$out_filepath"
+  fi
 
   echo "Downloaded PDF as: $out_filepath"
 }
