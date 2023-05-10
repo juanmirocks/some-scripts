@@ -1,6 +1,6 @@
 #!/bin/bash
 
-download_arxiv_PDF() {
+arxiv_download_PDF() {
   article="$1"
   save_to="${2-"."}"
 
@@ -56,5 +56,5 @@ download_arxiv_PDF() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  download_arxiv_PDF "$@"
+  arxiv_download_PDF "$@"
 fi
